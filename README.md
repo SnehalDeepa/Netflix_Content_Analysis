@@ -268,3 +268,8 @@ ORDER BY
     content_variety DESC;
 ```
 Objective: Analyze the variety of content offerings in each country and determine whether Netflix's strategy aligns with regional demands.
+
+## Data Visualisation
+
+
+<a href="Netflix_Content_Analysis.pbix">view Dashboard<a/>
