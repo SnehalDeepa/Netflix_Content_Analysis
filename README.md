@@ -16,10 +16,12 @@ This project delves into Netflix's vast content library to uncover patterns, tre
 
 ## Business Statement
 
--- 1)create table columns
+### 1)create table columns
 
+```sql
 DROP TABLE IF EXISTS netflix;
-
+```
+```sql
 CREATE TABLE netflix
 (
     show_id      VARCHAR(5),
@@ -35,27 +37,39 @@ CREATE TABLE netflix
     listed_in    VARCHAR(250),
     description  VARCHAR(550)
 );
+```
+Objective: Create Columns in table
 
--- 2)select entire data 
+### 2)select entire data 
 
+```sql
 select * from netflix;
-
+```
+```sql
 select distinct(type) from netflix;
+```
+objective: count total shows
 
--- 3)conunt the total of movies and TV Show
+### 3)conunt the total of movies and TV Show
 
+```sql
 SELECT COUNT(type) FROM netflix;
-	
--- 4)Count the Number of Movies vs TV Shows
+```
+Ojective: Count the total number of Movies and TV Shows
 
+### 4)Count the Number of Movies vs TV Shows
+
+```sql
 SELECT 
     type,
     COUNT(*)
 FROM netflix
 GROUP BY type;
+```
+ 
+### 5)Find the Most Common Rating for Movies and TV Shows
 
--- 5)Find the Most Common Rating for Movies and TV Shows
-
+```sql
 WITH RatingCounts AS (
     SELECT 
         type,
@@ -77,15 +91,21 @@ SELECT
     rating AS most_frequent_rating
 FROM RankedRatings
 WHERE rank = 1;
+```
+Objective: Identify the most frequently occurring rating for each type of content.
 
--- 6)List All Movies Released in a Specific Year (e.g., 2021)
+### 6)List All Movies Released in a Specific Year (e.g., 2021)
 
+```sql
 SELECT count(*) 
 FROM netflix
 WHERE release_year = 2021;
+```
+Objective:  Retrieve all movies released in a specific year.
 
--- 7)Find the Top 5 Countries with the Most Content on Netflix
+### 7)Find the Top 5 Countries with the Most Content on Netflix
 
+```sql
 SELECT * 
 FROM
 (
@@ -98,9 +118,12 @@ FROM
 WHERE country IS NOT NULL
 ORDER BY total_content DESC
 LIMIT 5;
+```
+Objective: Identify the top 5 countries with the highest number of content items.
 
--- 8)Find each year and the average numbers of content release in India on netflix.
+### 8)Find each year and the average numbers of content release in India on netflix.
 
+```sql
 SELECT 
     country,
     release_year,
@@ -114,9 +137,12 @@ WHERE country = 'India'
 GROUP BY country, release_year
 ORDER BY avg_release DESC
 LIMIT 5;
+```
+Objective: Calculate and rank years by the average number of content releases by India.
 
--- 9)Find the Top 10 Actors Who Have Appeared in the Highest Number of Movies Produced in India
+### 9)Find the Top 10 Actors Who Have Appeared in the Highest Number of Movies Produced in India
 
+```sql
 SELECT 
     UNNEST(STRING_TO_ARRAY(casts, ',')) AS actor,
     COUNT(*)
@@ -125,9 +151,12 @@ WHERE country = 'India'
 GROUP BY actor
 ORDER BY COUNT(*) DESC
 LIMIT 10;
+```
+Objective: Identify the top 10 actors with the most appearances in Indian-produced movies.
 
--- 10)Content Production Trends
+ ### 10)Content Production Trends
 
+```sql
 SELECT 
     release_year, 
     type, 
@@ -138,9 +167,12 @@ GROUP BY
     release_year, type
 ORDER BY 
     release_year ASC;
+```
+Objective: Identify the trends in Netflix content production across different years. Analyze the distribution of content types (movies vs. shows) and identify which genres are growing or declining.
 
--- 11)Regional Preferences
+### 11)Regional Preferences
 
+```sql
 SELECT 
     country, 
     listed_in AS genre, 
@@ -151,9 +183,12 @@ GROUP BY
     country, listed_in
 ORDER BY 
     country, genre_count DESC;
+```
+Objective: Explore regional content preferences by analyzing the most popular genres, directors, or actors in different countries.
 
--- 12)Release Patterns
+### 12)Release Patterns
 
+```sql
 SELECT 
     TO_CHAR(TO_DATE(date_added, 'Month DD, YYYY'), 'Month') AS month, 
     COUNT(*) AS content_count,
@@ -164,9 +199,12 @@ GROUP BY
     TO_CHAR(TO_DATE(date_added, 'Month DD, YYYY'), 'Month')
 ORDER BY 
     popularity_rank;
+```
+Objective: Determine the best time of year to release content based on patterns observed in Netflix's release schedule.
 
--- 13)Diversity in Content
+### 13)Diversity in Content
 
+```sql
 SELECT 
     country, 
     COUNT(DISTINCT listed_in) AS unique_genres,
@@ -177,9 +215,12 @@ GROUP BY
     country
 ORDER BY 
     diversity_rank;
+```
+Objective: Analyze the diversity of content in terms of country, genres, and languages to identify gaps in the library.
 
--- 14)Ratings Analysis
+### 14)Ratings Analysis
 
+```sql
 SELECT 
     rating, 
     COUNT(*) AS rating_count,
@@ -190,9 +231,12 @@ GROUP BY
     rating
 ORDER BY 
     rating_count DESC;
+```
+Objective: Evaluate the distribution of content ratings and analyze which categories dominate family-friendly vs. adult content.
 
--- 15)Genre Dominance
+### 15)Genre Dominance
 
+```sql
 SELECT 
     listed_in AS genre, 
     COUNT(*) AS genre_count,
@@ -205,9 +249,13 @@ HAVING
     COUNT(*) > 50
 ORDER BY 
     rank;
+```
+Objective: Identify the most commonly listed genres and determine the combinations that are most frequent.
 
--- 16)Content Variety by Country
 
+### 16)Content Variety by Country
+
+```sql
 SELECT 
     country, 
     COUNT(DISTINCT title) AS content_variety,
@@ -218,3 +266,5 @@ GROUP BY
     country
 ORDER BY 
     content_variety DESC;
+```
+Objective: Analyze the variety of content offerings in each country and determine whether Netflix's strategy aligns with regional demands.
