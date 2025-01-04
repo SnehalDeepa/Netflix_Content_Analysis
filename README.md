@@ -269,6 +269,180 @@ ORDER BY
 ```
 Objective: Analyze the variety of content offerings in each country and determine whether Netflix's strategy aligns with regional demands.
 
+## Python Code
+
+### Import Libraries
+
+```python
+import pandas as pd
+import numpy as np
+import seaborn as sns 
+import matplotlib.pyplot as plt
+```
+
+## Discribing and SOrting Data
+
+```python
+df = pd.read_csv("netflix_titles (1).csv")
+df
+```
+
+```python
+df.head()
+```
+
+```python
+df.info()
+```
+
+```python
+df.describe()
+```
+
+### Find The Most Common Rating For Movies and TV Shows
+
+```python
+rating_counts.plot(kind='bar', figsize=(10, 6))
+plt.title('Ratings Distribution for Movies and TV Shows')
+plt.xlabel('Rating')
+plt.ylabel('Count')
+plt.legend(title='Type')
+plt.xticks(rotation=45)
+plt.show()
+```
+
+### Top 5 Countries With Most Content On Netflix
+
+```python
+# Group by 'country' and count the number of titles for each country
+country_content_count = df['country'].value_counts().reset_index()
+country_content_count.columns = ['country', 'content_count']
+
+# Get the top 5 countries
+top_5_countries = country_content_count.head(5)
+
+# Display the result
+print("Top 5 Countries with Most Content on Netflix:")
+print(top_5_countries)
+
+sns.barplot(data=top_5_countries, x='content_count', y='country', palette='viridis')
+plt.title('Top 5 Countries with Most Content on Netflix')
+plt.xlabel('Number of Titles')
+plt.ylabel('Country')
+plt.show()
+```
+
+### Each Year and avg Numbers of Content Release in India on Netflix
+
+```python
+sns.lineplot(data=content_by_year, x='release_year', y='content_count', marker='o')
+plt.title('Content Releases in India by Year on Netflix')
+plt.xlabel('Year')
+plt.ylabel('Number of Releases')
+plt.show()
+```
+
+### Content Production Trends 
+
+```python
+content_trends = df.groupby(['release_year', 'type']).size().reset_index(name='content_count')
+content_trends['cumulative_count'] = content_trends.groupby('type')['content_count'].cumsum()
+
+sns.lineplot(data=content_trends, x='release_year', y='cumulative_count', hue='type', marker='o')
+plt.title('Content Production Trends')
+plt.show()
+```
+
+### Diversity in Content
+
+```python
+content_diversity = df.groupby('country')['listed_in'].nunique().reset_index(name='unique_genres')
+content_diversity = content_diversity.sort_values('unique_genres', ascending=False)
+
+content_diversity.head(10).plot(kind='bar', x='country', y='unique_genres', legend=False)
+plt.title('Diversity in Content by Country')
+plt.show()
+```
+
+## Ratings Analysis
+
+### Plot overall ratings distribution
+
+```python
+plt.figure(figsize=(10, 6))
+sns.barplot(data=rating_distribution, x='count', y='rating', palette='viridis')
+plt.title('Overall Ratings Distribution on Netflix')
+plt.xlabel('Number of Titles')
+plt.ylabel('Rating')
+plt.show()
+```
+
+### Plot ratings distribution by type
+
+```python
+plt.figure(figsize=(12, 7))
+sns.barplot(data=rating_by_type, x='count', y='rating', hue='type', palette='magma')
+plt.title('Ratings Distribution by Type (Movies vs TV Shows)')
+plt.xlabel('Number of Titles')
+plt.ylabel('Rating')
+plt.legend(title='Type')
+plt.show()
+```
+
+### Genre Dominance
+
+```python
+# Overall Genre Dominance
+plt.figure(figsize=(12, 7))
+sns.barplot(data=genre_counts.head(10), x='count', y='genre', palette='coolwarm')
+plt.title('Top 10 Dominant Genres on Netflix')
+plt.xlabel('Number of Titles')
+plt.ylabel('Genre')
+plt.show()
+
+# Genre Dominance by Type
+plt.figure(figsize=(14, 8))
+sns.barplot(data=genre_by_type, x='count', y='genre', hue='type', palette='magma')
+plt.title('Genre Dominance by Type (Movies vs TV Shows)')
+plt.xlabel('Number of Titles')
+plt.ylabel('Genre')
+plt.legend(title='Type')
+plt.show()
+```
+
+### Content Variety by country
+
+```python
+plt.figure(figsize=(12, 8))
+sns.barplot(data=content_variety.head(10), x='unique_genre_count', y='country', palette='coolwarm')
+plt.title('Top 10 Countries by Content Variety on Netflix')
+plt.xlabel('Number of Unique Genres')
+plt.ylabel('Country')
+plt.show()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Data Visualisation
 
 
